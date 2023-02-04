@@ -9,11 +9,7 @@ public class MerchantCombinationProduct {
     public String insertDt; // 格式 "yyyy-MM-ddTHH:mm:ss.SSSZ" ,UTC時間
     public String modifiedDt; // 格式 "yyyy-MM-ddTHH:mm:ss.SSSZ" ,UTC時間
 
-    public static class MerchantCombinationInfo {
-        public String productName; // 商品名稱
-        public String itemNumber; // 貨號
-        public int qty; // 數量
-        public BigDecimal cost; // 成本
-        public BigDecimal price; // 價格
+    public void setMerchantCombinationInfo() {
+
     }
 }

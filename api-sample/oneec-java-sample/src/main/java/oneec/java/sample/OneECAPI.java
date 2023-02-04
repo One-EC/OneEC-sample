@@ -1,5 +1,6 @@
 package oneec.java.sample;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
@@ -10,10 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import oneec.java.sample.helper.CryptHelper;
-import oneec.java.sample.models.Response;
-import oneec.java.sample.models.CipherResponse;
-import oneec.java.sample.models.MerchantCombinationProduct;
-import oneec.java.sample.models.MerchantProduct;
+import oneec.java.sample.models.*;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -49,6 +47,7 @@ public class OneECAPI {
             getMerchantCombinationProductList();
             saveProduct();
             saveProductCombinations();
+            getChannels();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -261,9 +260,9 @@ public class OneECAPI {
             merchantCombinationProduct.modifiedDt = "2022-05-12T14:52:11.333Z";
             merchantCombinationProduct.insertDt = "2022-05-12T14:52:11.333Z";
 
-            List<MerchantCombinationProduct.MerchantCombinationInfo> combinationInfoList = new ArrayList<>();
+            List<MerchantCombinationInfo> combinationInfoList = new ArrayList<>();
 
-            MerchantCombinationProduct.MerchantCombinationInfo combinationInfoI01 = new MerchantCombinationProduct.MerchantCombinationInfo();
+            MerchantCombinationInfo combinationInfoI01 = new MerchantCombinationInfo();
             combinationInfoI01.itemNumber = "070105022";
             combinationInfoI01.productName = "TBS-A";
             combinationInfoI01.qty = 1;
@@ -271,7 +270,7 @@ public class OneECAPI {
             combinationInfoI01.price = BigDecimal.valueOf(3);
             combinationInfoList.add(combinationInfoI01);
 
-            MerchantCombinationProduct.MerchantCombinationInfo combinationInfoI02 = new MerchantCombinationProduct.MerchantCombinationInfo();
+            MerchantCombinationInfo combinationInfoI02 = new MerchantCombinationInfo();
             combinationInfoI02.itemNumber = "0696204";
             combinationInfoI02.productName = "TBS-B";
             combinationInfoI02.qty = 2;
@@ -306,7 +305,40 @@ public class OneECAPI {
         } catch (Exception e) {
             System.out.println(e.getMessage() + ", " + e);
         }
-
     }
 
+    public static void getChannels() {
+        try {
+            String apiRoute = "/oapi/v1/data/merchant/channels/actived";
+            String param = "";
+            String endpoint = _domain + apiRoute;
+            System.out.println("endpoint: " + endpoint);
+
+            String body = "";
+            System.out.println("body: " + body);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(_partnerKeyID + "." + _merchantAccessToken);
+            headers.add("X-sign", getXSign(apiRoute + param, body));
+
+            HttpEntity<String> request = new HttpEntity<>(body, headers);
+
+            ResponseEntity<String> entity = new RestTemplate().exchange(endpoint, HttpMethod.GET, request, String.class);
+
+            TypeReference<Response> typeReference = new TypeReference<>() {
+            };
+
+            Response response = new JsonMapper().readValue(entity.getBody(), typeReference);
+            System.out.println(response.data);
+
+            if (response.status == HttpStatus.OK.value()) {
+                System.out.println("data: " + response.data);
+            } else {
+                System.out.println("response: " + new JsonMapper().writeValueAsString(response));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + ", " + e);
+        }
+    }
 }
