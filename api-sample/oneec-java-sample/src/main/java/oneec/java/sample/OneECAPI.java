@@ -48,6 +48,7 @@ public class OneECAPI {
             saveProduct();
             saveProductCombinations();
             getChannels();
+            getShips();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,15 +62,15 @@ public class OneECAPI {
             String apiRoute = "/oapi/v1/data/merchant/orders";
 
             String param = "";
-            //param = param+"?";
-            //param = param + "&shipStartDate=2022-03-16T16:46:05.005Z";      // ship start date  default ""
-            //param = param + "&shipEndDate=2023-03-16T16:46:05.005Z";        // ship end date  default ""
-            //param = param + "&orderCreateDate=2022-03-16T16:46:05.005Z";    // order create date  default ""
-            //param = param + "&orderStatus=";                                //
-            //param = param + "&channelId=AyNAVo";                            // channel id
-            //param = param + "&channelSettingId=partner_unit_test";          // platform
-            //param = param + "&start=0";                                     // start default 0
-            //param = param + "&limit=20";                                    // page size default 10
+//            param = param+"?";
+//            param = param + "&shipStartDate=2022-03-16T16:46:05.005Z";      // ship start date  default ""
+//            param = param + "&shipEndDate=2023-03-16T16:46:05.005Z";        // ship end date  default ""
+//            param = param + "&orderCreateDate=2022-03-16T16:46:05.005Z";    // order create date  default ""
+//            param = param + "&orderStatus=";                                //
+//            param = param + "&channelId=AyNAVo";                            // channel id
+//            param = param + "&channelSettingId=partner_unit_test";          // platform
+//            param = param + "&start=0";                                     // start default 0
+//            param = param + "&limit=20";                                    // page size default 10
 
             String endpoint = _domain + apiRoute + param;
 
@@ -334,6 +335,47 @@ public class OneECAPI {
 
             if (response.status == HttpStatus.OK.value()) {
                 System.out.println("data: " + response.data);
+            } else {
+                System.out.println("response: " + new JsonMapper().writeValueAsString(response));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + ", " + e);
+        }
+    }
+
+    public static void getShips() {
+        try {
+            String apiRoute = "/oapi/v1/data/merchant/ships";
+            String param = "?";
+            param = param + "limit=100"; // page size default 50
+            param = param + "&start=0"; // start default 0
+//            param = param + "&orderCreateDate="; // order create date default ""
+//            param = param + "&orderSns=OM220829000001,OM220829000002,OM220829000003"; // order sn default ""
+
+            String endpoint = _domain + apiRoute + param;
+            System.out.println("endpoint: " + endpoint);
+
+            String body = "";
+            System.out.println("body: " + body);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(_partnerKeyID + "." + _merchantAccessToken);
+            headers.add("X-sign", getXSign(apiRoute + param, body));
+
+            HttpEntity<String> request = new HttpEntity<>(body, headers);
+
+            ResponseEntity<String> entity = new RestTemplate().exchange(endpoint, HttpMethod.GET, request, String.class);
+
+            TypeReference<CipherResponse> typeReference = new TypeReference<>() {
+            };
+
+            CipherResponse response = new JsonMapper().readValue(entity.getBody(), typeReference);
+            System.out.println("response data: " + response.data);
+
+            if (response.status == HttpStatus.OK.value()) {
+                String decryptedData = _cryptHelper.decryptFromBase64(response.data);
+                System.out.println("decryptedData: " + decryptedData);
             } else {
                 System.out.println("response: " + new JsonMapper().writeValueAsString(response));
             }
