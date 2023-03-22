@@ -54,15 +54,15 @@ namespace Oneec_Sample.services
                 string apiRoute = "/oapi/v1/data/merchant/orders";
 
                 string param = "";
-                //param = param+"?";
+                param = param + "?";
                 //param = param + "&shipStartDate=2022-03-16T16:46:05.005Z";      // ship start date  default "" 
                 //param = param + "&shipEndDate=2023-03-16T16:46:05.005Z";        // ship end date  default "" 
-                //param = param + "&orderCreateDate=2022-03-16T16:46:05.005Z";    // order create date  default ""  
+                param = param + "&orderCreateDate=2023-02-20T16:16:10.111Z";    // order create date  default ""  
                 //param = param + "&orderStatus=";                                // 
-                //param = param + "&channelId=AyNAVo";                            // channel id
-                //param = param + "&channelSettingId=partner_unit_test";          // platform
-                //param = param + "&start=0";                                     // start default 0
-                //param = param + "&limit=20";                                    // page size default 10
+                param = param + "&channelId=9EOp9V";                            // channel id
+                param = param + "&channelSettingId=Custom-TWD";          // platform
+                param = param + "&start=0";                                     // start default 0
+                param = param + "&limit=20";                                    // page size default 10
                 string body = "";
                 var endpoint = $"{_endpoint}{apiRoute}{param}";
                 SetHeader(httpClient, apiRoute + param, body);
@@ -94,9 +94,9 @@ namespace Oneec_Sample.services
                 HttpClient httpClient = new HttpClient();
                 string apiRoute = "/oapi/v1/data/merchant/products";
                 string param = "";
-                //param = param+"?";
-                //param = param + "&limit=2";      // page size default 10   ,   max=100
-                //param = param + "&start=9";      // start default 0
+                param = param + "?";
+                param = param + "&limit=100";      // page size default 10   ,   max=100
+                param = param + "&start=25000";      // start default 0
                 //param = param + "&itemNumber=";  // product's number
                 string body = "";
                 var endpoint = $"{_endpoint}{apiRoute}{param}";
@@ -243,6 +243,62 @@ namespace Oneec_Sample.services
                     //var data = CryptService.AesGcmDecryptTByBase64(_AESKey, _AESIV, objectModel.data);
                     //Console.WriteLine(data);
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+        }
+        /// <summary>
+        /// Get the list for "ready to ship"
+        /// </summary>
+        public void GetShips()
+        {
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                string apiRoute = "/oapi/v1/data/merchant/ships";
+                string param = "";
+                param = param + "?";
+                param = param + "&limit=100";      // page size default 10   ,   max=100
+                param = param + "&start=0";      // start default 0
+                //param = param + "&itemNumber=";  // product's number
+                string body = "";
+                var endpoint = $"{_endpoint}{apiRoute}{param}";
+                SetHeader(httpClient, apiRoute + param, body);
+
+                var message = httpClient.GetAsync(endpoint).Result;
+                string resultStr = message.Content.ReadAsStringAsync().Result;
+                Console.WriteLine(resultStr);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+        }
+        /// <summary>
+        /// Execute Ship by orderSn
+        /// </summary>
+        public void ShipsAutoPackupByOrderSn()
+        {
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                string apiRoute = "/oapi/v1/data/merchant/ships/autoPackup/orderSn";
+                var data = new AutoPackup();
+                data.orderSn = "1234533";
+                 data.packNumber = 1;
+                data.channelId = "dsacse";
+                var body = JsonConvert.SerializeObject(data);
+                var endpoint = $"{_endpoint}{apiRoute}";
+                SetHeader(httpClient, apiRoute, body);
+
+                Console.WriteLine(body);
+                var httpContent = new StringContent(body, Encoding.UTF8, "application/json");
+                var message = httpClient.PostAsync(endpoint, httpContent).Result;
+                string resultStr = message.Content.ReadAsStringAsync().Result;
+                Console.WriteLine(resultStr);
             }
             catch (Exception ex)
             {

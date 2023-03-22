@@ -27,6 +27,8 @@ namespace Oneec_Sample
             ////  Create or modify combination products
             //oneECAPI.SaveProductCombinations();
 
+            //// Get the ships
+            //oneECAPI.GetShips();
 
         }
     }

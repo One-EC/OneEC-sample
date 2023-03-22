@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\2100265.SYSTEX\\source\\repos\\oneec-CSharp-Sample\\Oneec-Sample\\Oneec-Sample.csproj": {}
+    "D:\\Code\\OneEC-sample-main\\api-sample\\oneec-csharp-sample\\Oneec-Sample\\Oneec-Sample.csproj": {}
   },
   "projects": {
-    "C:\\Users\\2100265.SYSTEX\\source\\repos\\oneec-CSharp-Sample\\Oneec-Sample\\Oneec-Sample.csproj": {
+    "D:\\Code\\OneEC-sample-main\\api-sample\\oneec-csharp-sample\\Oneec-Sample\\Oneec-Sample.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\2100265.SYSTEX\\source\\repos\\oneec-CSharp-Sample\\Oneec-Sample\\Oneec-Sample.csproj",
+        "projectUniqueName": "D:\\Code\\OneEC-sample-main\\api-sample\\oneec-csharp-sample\\Oneec-Sample\\Oneec-Sample.csproj",
         "projectName": "Oneec-Sample",
-        "projectPath": "C:\\Users\\2100265.SYSTEX\\source\\repos\\oneec-CSharp-Sample\\Oneec-Sample\\Oneec-Sample.csproj",
+        "projectPath": "D:\\Code\\OneEC-sample-main\\api-sample\\oneec-csharp-sample\\Oneec-Sample\\Oneec-Sample.csproj",
         "packagesPath": "C:\\Users\\2100265.SYSTEX\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\2100265.SYSTEX\\source\\repos\\oneec-CSharp-Sample\\Oneec-Sample\\obj\\",
+        "outputPath": "D:\\Code\\OneEC-sample-main\\api-sample\\oneec-csharp-sample\\Oneec-Sample\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\IDE\\MicrosoftVisualStudio\\Shared\\NuGetPackages"
