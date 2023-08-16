@@ -19,7 +19,7 @@ HASH_KEY = 'Wfcx88ABXYzKw2luWiomOD1CKJvokcZj'
 
 # 加密
 def encrypt(secret_key, secret_iv, plain_message):
-    secret = base64.b64decode(SECRET_KEY.encode('utf-8'))
+    secret = base64.b64decode(secret_key.encode('utf-8'))
     print(secret)
     iv = SECRET_IV.encode()
     
@@ -35,7 +35,7 @@ def decrypt(secret_key, secret_iv, cipher_message):
     tag = decoded_cipher_byte[-TAG_LENGTH:]
     encrypted_message_byte = decoded_cipher_byte[:-TAG_LENGTH]
 
-    secret = base64.b64decode(SECRET_KEY.encode('utf-8'))
+    secret = base64.b64decode(secret_key.encode('utf-8'))
     iv = SECRET_IV.encode()
     
     cipher = AES.new(secret, AES.MODE_GCM, iv)
